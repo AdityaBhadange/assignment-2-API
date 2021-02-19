@@ -16,11 +16,23 @@ class GetNumbers(APIView):
 		if serializer.is_valid():
 			serializer.save()
 
-			file = File.objects.last()
+			result = serializer["upload"].value
+			result = result.split("/")
+			print("############", result[3])
 
-			print("####FILE", file.upload)
+			path = f"media/uploads/{result[3]}"
 
-			print("#### SERIALIZER", serializer)
+			file = open(path, "r")
+			if file.mode == "r":
+				contents = file.read()
+				print(contents)
+			file.close()
+
+
+			# print("####FILE", file.upload)
+
+
+			print("#### SERIALIZER", serializer["upload"])
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		else:
 			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
