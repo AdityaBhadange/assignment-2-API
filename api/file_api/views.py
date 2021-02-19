@@ -23,13 +23,12 @@ class GetNumbers(APIView):
 
 			file = open(path, "r")
 			contents = file.read()
-			the = contents.count("the")
-			this = contents.count("this")
-			there = contents.count("there")
+			the = contents.count("the ")
+			this = contents.count("this ")
+			there = contents.count("there ")
 			file.close()
 
 			resp = {"the": the, "this": this, "there": there}
-
 
 			return Response(resp, status=status.HTTP_201_CREATED)
 		else:
