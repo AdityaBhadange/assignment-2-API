@@ -16,23 +16,39 @@ class GetNumbers(APIView):
 		if serializer.is_valid():
 			serializer.save()
 
+			# Getting a file path after serialzing
 			result = serializer["upload"].value
 			result = result.split("/")
-
 			path = f"media/uploads/{result[3]}"
 
-			file = open(path, "r")
-			contents = file.read()
-			the = contents.count("the ")
-			this = contents.count("this ")
-			there = contents.count("there ")
-			file.close()
+			# Calling a file handling function for getting number of frequent words.
+			response = parse_file(path)
 
-			resp = {"the": the, "this": this, "there": there}
-
-			return Response(resp, status=status.HTTP_201_CREATED)
+			return Response(response, status=status.HTTP_201_CREATED)
 		else:
 			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-		# Now opening and reading recently saved file for returning count of some strings
 
+def parse_file(path):
+	"""
+	This is function for opening, reading and counting frequent occurence of
+	following words:
+	["the", "this", "there"]
+	"""
+	try:
+		file = open(path, "r")
+		
+		content = file.read()
+
+		the = content.count("the ")
+		this = content.count("this ")
+		there = content.count("there ")
+
+		file.close()
+
+		response = {"the": the, "this": this, "there": there}
+		return response
+
+	except:
+		response = {"error": "Could not read file"}
+		return response
