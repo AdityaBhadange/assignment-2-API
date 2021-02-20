@@ -27,3 +27,7 @@ Step 6: Run Django Server
 Step 6: After running a server send a .text file to the server using CURL
 > `$: curl -X POST -F upload=@"C:\Users\USER\Desktop\test.txt" http://localhost:8000/getnumbers/`
 
+It should give result like below:
+> `{"the":2,"this":1,"there":1}`
+
+
